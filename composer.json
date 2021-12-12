@@ -1,18 +1,29 @@
 {
-    "name": "laravel/laravel",
+    "name": "imadehub/iride",
     "type": "project",
-    "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
+    "description": "A loosely coupled taxi/logistics booking system.",
+    "keywords": [
+        "uber",
+        "taxi"
+    ],
     "license": "MIT",
     "require": {
         "php": "^7.3|^8.0",
+        "backpack/backupmanager": "^3.0",
+        "backpack/permissionmanager": "^6.0",
+        "backpack/settings": "^3.0",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
+        "laravel-notification-channels/fcm": "~2.0",
         "laravel/framework": "^8.65",
+        "laravel/jetstream": "^2.4",
         "laravel/sanctum": "^2.11",
-        "laravel/tinker": "^2.5"
+        "laravel/socialite": "^5.2",
+        "laravel/tinker": "^2.5",
+        "livewire/livewire": "^2.5"
     },
     "require-dev": {
+        "backpack/devtools": "^1.0",
         "facade/ignition": "^2.5",
         "fakerphp/faker": "^1.9.1",
         "laravel/sail": "^1.0.1",
@@ -56,6 +67,16 @@
         "optimize-autoloader": true,
         "preferred-install": "dist",
         "sort-packages": true
+    },
+    "repositories": {
+        "backpack/devtools": {
+            "type": "composer",
+            "url": "https://repo.backpackforlaravel.com"
+        },
+        "0": {
+            "type": "composer",
+            "url": "https://repo.backpackforlaravel.com/"
+        }
     },
     "minimum-stability": "dev",
     "prefer-stable": true

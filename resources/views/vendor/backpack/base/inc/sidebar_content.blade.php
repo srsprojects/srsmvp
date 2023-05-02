@@ -12,5 +12,12 @@
 
 
 @includeWhen(class_exists(\Backpack\DevTools\DevToolsServiceProvider::class), 'backpack.devtools::buttons.sidebar_item')
+
+<li class='nav-item'><a class='nav-link' href='{{ backpack_url('wallet') }}'><i class='nav-icon la la-wallet'></i> Wallets</a></li>
+<li class='nav-item'><a class='nav-link' href='{{ backpack_url('transaction') }}'><i class='nav-icon la la-credit-card'></i> Transactions</a></li> <!--briefcase for pricing -->
+<li class='nav-item'><a class='nav-link' href='{{ backpack_url('recyclable-type') }}'><i class='nav-icon la la-tags'></i> Recyclable Types</a></li>
+<li class='nav-item'><a class='nav-link' href='{{ backpack_url('recyclable') }}'><i class='nav-icon la la-cubes'></i> Recyclables</a></li>
+<li class='nav-item'><a class='nav-link' href='{{ backpack_url('recyclable-price') }}'><i class='nav-icon la la-briefcase'></i> Recyclable Prices</a></li>
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('setting') }}'><i class='nav-icon la la-cog'></i> <span>Settings</span></a></li>
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('backup') }}'><i class='nav-icon la la-hdd-o'></i> Backups</a></li>
+<li class='nav-item'><a class='nav-link' href='{{ backpack_url('location') }}'><i class='nav-icon la la-map-marker'></i> Locations</a></li>

@@ -10,8 +10,11 @@
     "license": "MIT",
     "require": {
         "php": "^7.3|^8.0",
+        "africastalking/africastalking": "^3.0",
         "backpack/backupmanager": "^3.0",
+        "backpack/crud": "^5.0.0",
         "backpack/permissionmanager": "^6.0",
+        "backpack/pro": "^1.0.0",
         "backpack/settings": "^3.0",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
@@ -21,9 +24,7 @@
         "laravel/sanctum": "^2.11",
         "laravel/socialite": "^5.2",
         "laravel/tinker": "^2.5",
-        "livewire/livewire": "^2.5",
-        "backpack/crud": "^5.0.0",
-        "backpack/pro": "^1.0.0"
+        "livewire/livewire": "^2.5"
     },
     "require-dev": {
         "backpack/devtools": "^1.0",

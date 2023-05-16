@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Library\ReferralCode;
+use App\Library\ReferralCode;
 use App\Models\Wallet;
 use Backpack\PermissionManager\app\Models\Role;
 

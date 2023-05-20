@@ -21,3 +21,4 @@
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('setting') }}'><i class='nav-icon la la-cog'></i> <span>Settings</span></a></li>
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('backup') }}'><i class='nav-icon la la-hdd-o'></i> Backups</a></li>
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('location') }}'><i class='nav-icon la la-map-marker'></i> Locations</a></li>
+<li class='nav-item'><a class='nav-link' href='{{ backpack_url('referral') }}'><i class='nav-icon la la-share'></i> Referrals</a></li>

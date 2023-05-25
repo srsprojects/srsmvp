@@ -28,4 +28,9 @@ class RecyclableType extends Model
     protected $casts = [
         'id' => 'integer',
     ];
+
+    public function price_per_kg()
+    {
+        return $this->belongsToMany(RecyclablePrice::class);
+    }
 }

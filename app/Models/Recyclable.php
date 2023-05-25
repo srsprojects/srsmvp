@@ -16,7 +16,8 @@ class Recyclable extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id',
+        'depositor_id',
+        'collector_id',
         'recyclable_type_id',
         'qty',
         'earnings',
@@ -29,15 +30,21 @@ class Recyclable extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'user_id' => 'integer',
+        'depositor_id' => 'integer',
+        'collector_id' => 'integer',
         'recyclable_type_id' => 'integer',
         'qty' => 'decimal:3',
         'earnings' => 'float',
     ];
 
-    public function user()
+    public function depositor()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id', 'depositor_id')->as('depositor');
+    }
+
+    public function collector()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'collector_id')->as('collector');
     }
 
     public function recyclableType()

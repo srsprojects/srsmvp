@@ -37,11 +37,36 @@ function containsMaliciousInput(String $stringToCheck = null)
         '</script>',
         '<?>',
         '<?php>',
-        '{{}}',        
+        '{{}}',
     ];
     $occurrence = 0;
-    foreach($badInputs as $a){
+    foreach ($badInputs as $a) {
         $occurrence += substr_count($stringToCheck, $a);
     }
     return $occurrence > 0;
+}
+
+function internationalize($phone, $countryCode = '+234')
+{
+    $formatted = $phone;
+    // Check if the phone number is not already internationalized
+    if (substr($phone, 0, 4) !== '+234') {
+        // Convert the phone number to the international format
+        $formatted = preg_replace('/^0/', '+234', $phone);
+    }
+    else if (substr($phone, 0, 3) == '234') {
+        $formatted = "+". $phone;
+    }
+    return $formatted;
+}
+
+function domesticate($phone)
+{
+    if (substr($phone, 0, 4) == '+234') {
+        return preg_replace('/^\+234/', '0', $phone);
+    }
+    else if (substr($phone, 0, 3) == '234') {
+        return preg_replace('/^234/', '0', $phone);
+    }
+    return $phone;
 }

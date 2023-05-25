@@ -22,4 +22,5 @@ Route::group([
     Route::crud('transaction', 'TransactionCrudController');
     Route::crud('recyclable', 'RecyclableCrudController');
     Route::crud('recyclable-price', 'RecyclablePriceCrudController');
+    Route::crud('referral', 'ReferralCrudController');
 }); // this should be the absolute last line of this file

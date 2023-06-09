@@ -22,3 +22,5 @@ Route::get('google/callback', [SocialAuthController::class, 'googleCallback'])->
 Route::get('facebook', [SocialAuthController::class, 'facebookRedirect'])->name('facebooklogin');
 Route::get('facebook/callback', [SocialAuthController::class, 'facebookCallback'])->name('facebookcallback');
 });
+
+Route::get('user/{phone}', [AuthController::class, 'getUser'])->name('getuserbyphone');

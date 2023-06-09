@@ -91,7 +91,8 @@ function getAllNigerianBanks()
 
     curl_close($curl);
     if ($response) {
-        return $response->data;
+        $res = json_decode($response);
+        return $res->data;
     }
     return [];
 }

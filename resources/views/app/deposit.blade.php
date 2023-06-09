@@ -154,17 +154,12 @@
                     verifyTransactionOnBackend(payment.id);
                 },
                 onclose: function(incomplete) {
-                    if (incomplete || window.verified === false) {
-                        /* document.querySelector("#payment-failed").style.display = 'block'; */
+                    /* if (incomplete || window.verified === false) {
+                        document.querySelector("#payment-failed").style.display = 'block'; 
                     } else {
-                        document.querySelector("form").style.display = 'none';
-                        if (window.verified == true) {
-                            document.querySelector("#payment-success").style.display = 'block';
-                        } else {
-                            document.querySelector("#payment-pending").style.display = 'block';
-                        }
-                    }
-                    location.reload();
+                        
+                    } */
+                    window.location.href = '/dashboard';
                 },
                 meta: {
                     user_id: "<?php echo $user->id; ?>",

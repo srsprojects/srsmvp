@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Transaction;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -94,6 +96,39 @@ class TransactionController extends Controller
     }
 
     /**
+     * Accept Flutterwave Webhook and Process Request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function flwhook(Request $request)
+    {
+        Log::debug('Recieved Transaction Message \n' . ($request->json()));
+
+        // If you specified a secret hash, check for the signature
+        $secretHash = env('FLW_ENC_KEY');
+        $signature = $request->header('verif-hash');
+        if (!$signature || ($signature !== $secretHash)) {
+            // This request isn't from Flutterwave; discard
+            abort(401);
+        }
+        $payload = $request->all();
+        
+        $user = User::find($payload['meta']['user_id']);
+        Transaction::create([
+            'user_id' => $user->id,
+            'amount' => 'float',
+            'payload' => $payload,
+            'type' => 'deposit',
+            'ref' => $payload['tx_ref'],
+            'status' => 'completed',
+        ]);
+        $user->wallet->deposit(floatval($payload['amount']));
+        // Do something (that doesn't take too long) with the payload
+        return response(200);
+    }
+
+    /**
      * Accept Paystack Webhook and Process Request.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -101,6 +136,6 @@ class TransactionController extends Controller
      */
     public function paystackhook(Request $request)
     {
-        Log::debug('Recieved Message \n'. ($request->json()));
+        Log::debug('Recieved Transaction Message \n' . ($request->json()));
     }
 }

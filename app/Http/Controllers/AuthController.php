@@ -164,4 +164,13 @@ class AuthController extends Controller
         }
         return $this->onError([],401);
     }
+
+    public function getUser($phone)
+    {
+        $user = User::where('phone', $phone)->first();
+        if (empty($user)) {
+            return $this->APIError([], 404, 'No Registered User Found');
+        }
+        return $this->APISuccess($user);
+    }
 }

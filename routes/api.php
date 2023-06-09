@@ -32,6 +32,7 @@ Route::prefix('v1')->group(function () {
     //Declare Webhooks here
     Route::prefix('webhook')->group(function (){
         Route::post('paystack', 'App\Http\Controllers\TransactionController@paystackhook')->name('paystackhook');
+        Route::post('/flwhook', 'App\Http\Controllers\TransactionController@flwhook')->name('flwhook');
         Route::post('ussd', 'App\Http\Controllers\USSD\DefaultGate@USSDoutlet')->name('ussdcallback');
     });
 

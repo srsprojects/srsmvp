@@ -16,9 +16,9 @@
                     </div>
                     <div class="form-control-group">
 
-                        <input type="text" class="form-control form-control-lg form-control-number" id="buysell-amount"
+                        <input type="number" class="form-control form-control-lg form-control-number" id="buysell-phone"
                             name="phone" placeholder="08062238849">
-                        <div class="form-dropdown">
+                        <div class="form-dropdown scan">
                             <em class="icon ni ni-scan" style="font-size:50px;"></em>
                         </div>
                     </div>
@@ -146,8 +146,32 @@
     </div><!-- .buysell -->
 
 @endsection
-
+@include('components.modals.scan-modal')
 @push('scripts')
+<script src="https://unpkg.com/html5-qrcode@2.0.9/dist/html5-qrcode.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Event handler for selecting an option
+        $('.scan').click(function(e) {
+            e.preventDefault();
+            $('#scan').modal('show');
+            function onScanSuccess(decodedText, decodedResult) {
+                console.log(`Code scanned = ${decodedText}`, decodedResult);
+                $('#buysell-phone').val(decodedText);
+                $('#scan').modal('hide');
+            }
+            var html5QrcodeScanner = new Html5QrcodeScanner(
+                "qr-reader", {
+                    fps: 10
+                    , qrbox: 250
+                });
+            html5QrcodeScanner.render(onScanSuccess);
+
+        });
+    });
+
+</script>
+
 @endpush
 
 @push('styles')

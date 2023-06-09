@@ -97,7 +97,7 @@
                                                 data-currency="{{ $bank->code }}">
                                                 <div class="coin-item coin-{{ $bank->code }}">
                                                     <div class="coin-icon">
-                                                        <em class="icon ni ni-building-outline"></em>
+                                                        <em class="icon ni ni-building-fill"></em>
                                                     </div>
                                                     <div class="coin-info">
                                                         <span class="coin-name">{{ $bank->name }}</span>

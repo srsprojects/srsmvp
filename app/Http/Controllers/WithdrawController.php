@@ -34,7 +34,13 @@ class WithdrawController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Transaction::create([
+            'user_id' => $user->id,
+            'amount' => 'float',
+            'payload' => $request->all(),
+            'type' => 'withdraw',
+            'ref' => uniqid().time(),
+        ]);
     }
 
     /**

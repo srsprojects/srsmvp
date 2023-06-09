@@ -38,4 +38,29 @@ class Wallet extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function deposit(float $amount, string $bal = 'balance')
+    {
+        $this->$bal += $amount;
+        $this->save();
+        return $this->$bal;
+    }
+
+    public function withdraw(float $amount, string $bal = 'balance')
+    {
+        if ($this->$bal < $amount) {
+            return false;
+        }
+        $this->$bal -= $amount;
+        $this->save();
+        return $this->$bal;
+    }
+
+    public function transfer(float $amount, Wallet $recipient)
+    {
+        if ($this->withdraw($amount)) {
+            $recipient->deposit($amount);
+        }
+        return true;
+    }
 }

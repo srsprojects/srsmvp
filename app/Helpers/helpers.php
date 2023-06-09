@@ -53,9 +53,8 @@ function internationalize($phone, $countryCode = '+234')
     if (substr($phone, 0, 4) !== '+234') {
         // Convert the phone number to the international format
         $formatted = preg_replace('/^0/', '+234', $phone);
-    }
-    else if (substr($phone, 0, 3) == '234') {
-        $formatted = "+". $phone;
+    } else if (substr($phone, 0, 3) == '234') {
+        $formatted = "+" . $phone;
     }
     return $formatted;
 }
@@ -64,9 +63,35 @@ function domesticate($phone)
 {
     if (substr($phone, 0, 4) == '+234') {
         return preg_replace('/^\+234/', '0', $phone);
-    }
-    else if (substr($phone, 0, 3) == '234') {
+    } else if (substr($phone, 0, 3) == '234') {
         return preg_replace('/^234/', '0', $phone);
     }
     return $phone;
+}
+
+function getAllNigerianBanks()
+{
+    $curl = curl_init();
+
+    curl_setopt_array($curl, array(
+        CURLOPT_URL => "https://api.flutterwave.com/v3/banks/NG",
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => "",
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 0,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => "GET",
+        CURLOPT_HTTPHEADER => array(
+            "Authorization: Bearer ".env('FLW_PRV_KEY')
+        ),
+    ));
+
+    $response = curl_exec($curl);
+
+    curl_close($curl);
+    if ($response) {
+        return $response->data;
+    }
+    return [];
 }

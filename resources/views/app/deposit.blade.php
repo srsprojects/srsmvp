@@ -1,17 +1,17 @@
 @extends('layouts.app');
 
-@section('title','Deposit Funds to Prefund Wallet')
+@section('title', 'Deposit Funds to Prefund Wallet')
 
 @section('content')
-    
-<div class="buysell wide-xs m-auto">
-    @include('components.deposit-withdraw-nav')
-    <div class="buysell-title text-center">
-        <h2 class="title">Pre Fund Your Wallet!</h2>
-    </div><!-- .buysell-title -->
-    <div class="buysell-block">
-        <form action="#" class="buysell-form">
-            {{-- <div class="buysell-field form-group">
+
+    <div class="buysell wide-xs m-auto">
+        @include('components.deposit-withdraw-nav')
+        <div class="buysell-title text-center">
+            <h2 class="title">Pre Fund Your Wallet!</h2>
+        </div><!-- .buysell-title -->
+        <div class="buysell-block">
+            <form action="#" name="deposit" class="buysell-form">
+                {{-- <div class="buysell-field form-group">
                 <div class="form-label-group">
                     <label class="form-label">Choose what you want to get</label>
                 </div>
@@ -59,66 +59,144 @@
                         </ul>
                     </div><!-- .dropdown-menu -->
                 </div><!-- .dropdown -->
-            </div> --}}<!-- .buysell-field -->
-            <div class="buysell-field form-group">
-                <div class="form-label-group">
-                    <label class="form-label" for="buysell-amount">Amount to Deposit</label>
-                </div>
-                <div class="form-control-group">
-                    <input type="text" class="form-control form-control-lg form-control-number" id="buysell-amount" name="amount" placeholder="1000.00">
-                    <div class="form-dropdown">
-                        <div class="text-primary">NGN</div>
+            </div> --}}
+                <!-- .buysell-field -->
+                <div class="buysell-field form-group">
+                    <div class="form-label-group">
+                        <label class="form-label" for="buysell-amount">Amount to Deposit</label>
                     </div>
-                </div>
-                <div class="form-note-group">
-                    <span class="buysell-min form-note-alt">Minimum: 1000.00 NGN</span>
-                    <span class="buysell-rate form-note-alt">1 NGN = 1 NGN (SRS)</span>
-                </div>
-            </div><!-- .buysell-field -->
-            <div class="buysell-field form-group">
-                <div class="form-label-group">
-                    <label class="form-label">Payment Method</label>
-                </div>
-                <div class="form-pm-group">
-                    <ul class="buysell-pm-list">
-                        {{-- <li class="buysell-pm-item">
+                    <div class="form-control-group">
+                        <input type="number" step=".01" class="form-control form-control-lg form-control-number"
+                            id="buysell-amount" name="amount" required placeholder="1000.00">
+                        <div class="form-dropdown">
+                            <div class="text-primary">NGN</div>
+                        </div>
+                    </div>
+                    <div class="form-note-group">
+                        <span class="buysell-min form-note-alt">Minimum: 1000.00 NGN</span>
+                        <span class="buysell-rate form-note-alt">1 NGN = 1 NGN (SRS)</span>
+                    </div>
+                </div><!-- .buysell-field -->
+                <div class="buysell-field form-group">
+                    <div class="form-label-group">
+                        <label class="form-label">Payment Method</label>
+                    </div>
+                    <div class="form-pm-group">
+                        <ul class="buysell-pm-list">
+                            {{-- <li class="buysell-pm-item">
                             <input class="buysell-pm-control" type="radio" name="bs-method" id="pm-paypal" />
                             <label class="buysell-pm-label" for="pm-paypal">
                                 <span class="pm-name">Paystack</span>
                                 <span class="pm-icon"><em class="icon ni ni-paypal-alt"></em></span>
                             </label>
                         </li> --}}
-                        <li class="buysell-pm-item">
-                            <input class="buysell-pm-control" type="radio" name="bs-method" id="pm-bank" required/>
-                            <label class="buysell-pm-label" for="pm-bank">
-                                <span class="pm-name">MTN MOMO</span>
-                                <span class="pm-icon"><em class="icon ni ni-building-fill"></em></span>
-                            </label>
-                        </li>
-                        <li class="buysell-pm-item">
-                            <input class="buysell-pm-control" type="radio" name="bs-method" id="pm-card" required/>
-                            <label class="buysell-pm-label" for="pm-card">
-                                <span class="pm-name">Credit / Debit Card</span>
-                                <span class="pm-icon"><em class="icon ni ni-cc-alt-fill"></em></span>
-                            </label>
-                        </li>
-                    </ul>
-                </div>
-            </div><!-- .buysell-field -->
-            <div class="buysell-field form-action">
-                <a class="btn btn-lg btn-block btn-primary" data-bs-toggle="modal" href="#buy-coin">Continue to Deposit</a>
-            </div><!-- .buysell-field -->
-            <div class="form-note text-base text-center">NB: transfer fees may be included at checkout, <a href="#">Learn about fees</a>.</div>
-        </form><!-- .buysell-form -->
-    </div><!-- .buysell-block -->
-</div><!-- .buysell -->
+                            <li class="buysell-pm-item">
+                                <input class="buysell-pm-control" type="radio" value="mtnmomo" name="bs-method"
+                                    id="pm-bank" required />
+                                <label class="buysell-pm-label" for="pm-bank">
+                                    <span class="pm-name">MTN MOMO</span>
+                                    <span class="pm-icon"><em class="icon ni ni-building-fill"></em></span>
+                                </label>
+                            </li>
+                            <li class="buysell-pm-item">
+                                <input class="buysell-pm-control" type="radio" value="card" name="bs-method"
+                                    id="pm-card" required />
+                                <label class="buysell-pm-label" for="pm-card">
+                                    <span class="pm-name">Credit / Debit Card</span>
+                                    <span class="pm-icon"><em class="icon ni ni-cc-alt-fill"></em></span>
+                                </label>
+                            </li>
+                        </ul>
+                    </div>
+                </div><!-- .buysell-field -->
+                <div class="buysell-field form-action">
+                    <button class="btn btn-lg btn-block btn-primary" onclick="handlePay(event)">Continue to Deposit</button>
+                </div><!-- .buysell-field -->
+                <div class="form-note text-base text-center">NB: transfer fees may be included at checkout, <a
+                        href="#">Learn about fees</a>.</div>
+            </form><!-- .buysell-form -->
+        </div><!-- .buysell-block -->
+    </div><!-- .buysell -->
 
 @endsection
-
+@php
+    $user = Auth::user();
+@endphp
 @push('scripts')
-    
+    <script src="https://checkout.flutterwave.com/v3.js"></script>
+
+    <script>
+        function handlePay(event) {
+            event.preventDefault(); // Prevent the form from submitting
+
+            payment_method = document.forms["deposit"]["bs-method"].value;
+
+            switch (payment_method) {
+                case 'card':
+                    makeCardPayment();
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+        function makeCardPayment() {
+            var amount = document.querySelector("#buysell-amount").value;
+            FlutterwaveCheckout({
+                public_key: "<?php echo env('FLW_PUB_KEY'); ?>",
+                tx_ref: "SRS-" + generateUniqueID(),
+                amount: parseFloat(amount).toFixed(2),
+                currency: "NGN",
+                payment_options: "card, mobilemoneyghana, ussd",
+                callback: function(payment) {
+                    // Send AJAX verification request to backend
+                    verifyTransactionOnBackend(payment.id);
+                },
+                onclose: function(incomplete) {
+                    if (incomplete || window.verified === false) {
+                        /* document.querySelector("#payment-failed").style.display = 'block'; */
+                    } else {
+                        document.querySelector("form").style.display = 'none';
+                        if (window.verified == true) {
+                            document.querySelector("#payment-success").style.display = 'block';
+                        } else {
+                            document.querySelector("#payment-pending").style.display = 'block';
+                        }
+                    }
+                    location.reload();
+                },
+                meta: {
+                    user_id: "<?php echo $user->id; ?>",
+                },
+                customer: {
+                    email: "<?php echo $user->email; ?>",
+                    phone_number: "<?php echo $user->phone; ?>",
+                    name: "<?php echo $user->name; ?>",
+                },
+                customizations: {
+                    title: "SRS Wallet Deposit",
+                    description: "Payment for Wallet Deposit Transaction",
+                    logo: "",
+                },
+            });
+        }
+
+        function verifyTransactionOnBackend(transactionId) {
+            // Let's just pretend the request was successful
+            setTimeout(function() {
+                window.verified = true;
+            }, 200);
+        }
+
+        function generateUniqueID() {
+            var timestamp = Date.now().toString(36);
+            var randomChars = Math.random().toString(36).substr(2, 5);
+            var uniqueID = timestamp + randomChars;
+            return uniqueID;
+        }
+    </script>
 @endpush
 
 @push('styles')
-    
 @endpush

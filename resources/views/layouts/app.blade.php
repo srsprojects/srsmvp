@@ -76,7 +76,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             setTimeout(function() {
                 $('.alert').alert('close');
-            }, 5000);
+            }, 15000);
         });
     </script>
     @livewireScripts

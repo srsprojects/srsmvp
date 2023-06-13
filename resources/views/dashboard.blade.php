@@ -92,7 +92,7 @@
                                             {!! $user->userQrCodeSvg() !!}
                                         </div>
                                     </div>
-                                    <a href="#" class="btn btn-light btn-white"><span>Print Code</span> <em class="icon ni ni-printer"></em></a>
+                                    <button id="printBtn" class="btn btn-light btn-white"><span>Print Code</span> <em class="icon ni ni-printer"></em></button>
                                 </div>
                                 
                             </div><!-- .card-preview -->
@@ -121,15 +121,15 @@
                                 <div class="tranx-col">
                                     <div class="tranx-info">
                                         <div class="tranx-data">
-                                            <div class="tranx-label">Buy Bitcoin <em class="tranx-icon sm icon ni ni-sign-btc"></em></div>
-                                            <div class="tranx-date">Nov 12, 2019 11:34 PM</div>
+                                            <div class="tranx-label">Recyclable #{{ $item->id }} <em class="tranx-icon sm icon ni ni-sign-naira"></em></div>
+                                            <div class="tranx-date">{{ $item->created_at }}</div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="tranx-col">
                                     <div class="tranx-amount">
-                                        <div class="number">0.5384 <span class="currency currency-btc">BTC</span></div>
-                                        <div class="number-sm">3,980.93 <span class="currency currency-usd">USD</span></div>
+                                        <div class="number">{{ $item->earnings }} <span class="currency currency-nio">NGN</span></div>
+                                        <div class="number-sm">{{ $item->qty }} <span class="currency currency-usd">KG</span></div>
                                     </div>
                                 </div>
                             </div><!-- .tranx-item -->
@@ -293,3 +293,47 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    $(document).ready(function() {
+        $('#printBtn').on('click', function() {
+            var qrCodeElement = $('#userQR');
+            var qrCodeSVG = qrCodeElement.html();
+
+            var printWindow = window.open('', '', 'width=600,height=600');
+            printWindow.document.open();
+            printWindow.document.write(`
+                <html>
+                <head>
+                    <title>Print QR Code</title>
+                    <style>
+                        @media print {
+                            body {
+                                margin: 0;
+                                padding: 0;
+                            }
+                        }
+                    </style>
+                </head>
+                <body>
+                    ${qrCodeSVG}
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            window.print();
+                        });
+                        $(window).on('load', function() {
+                            window.print();
+                            $(window).on('afterprint', function() {
+                                window.close();
+                            });
+                        });
+                    </scrip>
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
+        });
+    });
+</script>
+@endpush

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Library\TransactHook;
 use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -9,6 +10,7 @@ use Illuminate\Support\Facades\Log;
 
 class TransactionController extends Controller
 {
+    use TransactHook;
     /**
      * Display a listing of the resource.
      *
@@ -113,17 +115,19 @@ class TransactionController extends Controller
             abort(401);
         }
         $payload = $request->all();
+
+        switch ($payload['event']) {
+            case 'transfer.completed':
+                $this->transferEvents($payload);
+                break;
+            case 'charge.completed':
+                $this->chargeEvents($payload);
+                break;
+            default:
+                # code...
+                break;
+        }
         
-        $user = User::find($payload['meta']['user_id']);
-        Transaction::create([
-            'user_id' => $user->id,
-            'amount' => 'float',
-            'payload' => $payload,
-            'type' => 'deposit',
-            'ref' => $payload['tx_ref'],
-            'status' => 'completed',
-        ]);
-        $user->wallet->deposit(floatval($payload['amount']));
         // Do something (that doesn't take too long) with the payload
         return response(200);
     }

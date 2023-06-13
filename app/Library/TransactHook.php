@@ -9,22 +9,22 @@ trait TransactHook
 {
     protected function transferEvents($payload)
     {
-        $trnx = Transaction::find($payload['meta']['trnx_id']);
-        $trnx->status = Str::lower($payload['status']);
+        $trnx = Transaction::where('ref',$payload['data']['tx_ref']);
+        $trnx->status = Str::lower($payload['data']['status']);
         $trnx->save();
     }
 
     protected function chargeEvents($payload)
     {
-        $user = User::find($payload['meta']['user_id']);
+        $user = User::where('email', $payload['data']['customer']['email'])->first();
         Transaction::create([
             'user_id' => $user->id,
-            'amount' => 'float',
+            'amount' => floatval($payload['data']['amount']),
             'payload' => $payload,
             'type' => 'deposit',
-            'ref' => $payload['tx_ref'],
+            'ref' => $payload['data']['tx_ref'],
             'status' => 'successful',
         ]);
-        $user->wallet->deposit(floatval($payload['amount']));
+        $user->wallet->deposit(floatval($payload['data']['amount']));
     }
 }

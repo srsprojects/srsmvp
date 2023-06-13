@@ -105,27 +105,32 @@ class TransactionController extends Controller
      */
     public function flwhook(Request $request)
     {
-        Log::debug('Recieved Transaction Message \n' . ($request->json()));
+        Log::debug('Recieved Transaction Message \n' . json_encode($request->all()));
 
         // If you specified a secret hash, check for the signature
         $secretHash = env('FLW_ENC_KEY');
         $signature = $request->header('verif-hash');
         if (!$signature || ($signature !== $secretHash)) {
             // This request isn't from Flutterwave; discard
+            Log::info($secretHash.' and '. $signature);
             abort(401);
         }
         $payload = $request->all();
-
-        switch ($payload['event']) {
-            case 'transfer.completed':
-                $this->transferEvents($payload);
-                break;
-            case 'charge.completed':
-                $this->chargeEvents($payload);
-                break;
-            default:
-                # code...
-                break;
+        if (isset($payload['event']) && !empty($payload['event'])){
+            switch ($payload['event']) {
+                case 'transfer.completed':
+                    $this->transferEvents($payload);
+                    break;
+                case 'charge.completed':
+                    $this->chargeEvents($payload);
+                    break;
+                default:
+                    $this->chargeEvents($payload);
+                    break;
+            }
+        }
+        else {
+            $this->chargeEvents($payload);
         }
         
         // Do something (that doesn't take too long) with the payload

@@ -29,8 +29,8 @@ class RecyclableType extends Model
         'id' => 'integer',
     ];
 
-    public function price_per_kg()
+    public function prices()
     {
-        return $this->belongsToMany(RecyclablePrice::class);
+        return $this->hasMany(RecyclablePrice::class);
     }
 }

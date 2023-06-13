@@ -39,12 +39,12 @@ class Recyclable extends Model
 
     public function depositor()
     {
-        return $this->belongsTo(User::class, 'user_id', 'depositor_id')->as('depositor');
+        return $this->belongsTo(User::class, 'user_id', 'depositor_id');
     }
 
     public function collector()
     {
-        return $this->belongsTo(User::class, 'user_id', 'collector_id')->as('collector');
+        return $this->belongsTo(User::class, 'user_id', 'collector_id');
     }
 
     public function recyclableType()

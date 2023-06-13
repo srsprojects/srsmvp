@@ -10,14 +10,18 @@
             <h2 class="title">Withdraw From Your Wallet!</h2>
         </div><!-- .buysell-title -->
         <div class="buysell-block">
-            <form action="{{ route('withdraw.store') }}" name="withdraw" class="buysell-form">
+            <div class="text-danger">
+                <x-jet-validation-errors class="mb-4" />
+            </div>
+            <form action="{{ route('withdraw.store') }}" method="POST" name="withdraw" class="buysell-form">
+                @csrf
                 <div class="buysell-field form-group">
                     <div class="form-label-group">
                         <label class="form-label" for="buysell-amount">Amount to Withdraw</label>
                     </div>
                     <div class="form-control-group">
                         <input type="number" step=".01" class="form-control form-control-lg form-control-number"
-                            id="buysell-amount" name="amount" placeholder="1000.00">
+                            id="buysell-amount" name="amount" placeholder="1000.00" required>
                         <div class="form-dropdown">
                             <div class="text-primary">NGN</div>
                         </div>
@@ -41,14 +45,16 @@
                             </label>
                         </li> --}}
                             <li class="buysell-pm-item">
-                                <input class="buysell-pm-control" type="radio" value="mtnmomo" name="bs-method" id="pm-bank" required />
+                                <input class="buysell-pm-control" type="radio" value="mtnmomo" name="method"
+                                    id="pm-bank" required />
                                 <label class="buysell-pm-label" for="pm-bank">
                                     <span class="pm-name">MTN MOMO</span>
                                     <span class="pm-icon"><em class="icon ni ni-building-fill"></em></span>
                                 </label>
                             </li>
                             <li class="buysell-pm-item">
-                                <input class="buysell-pm-control" type="radio" value="bank" name="bs-method" id="pm-card" required />
+                                <input class="buysell-pm-control" type="radio" value="bank" name="method"
+                                    id="pm-card" required />
                                 <label class="buysell-pm-label" for="pm-card">
                                     <span class="pm-name">Direct to Bank</span>
                                     <span class="pm-icon"><em class="icon ni ni-cc-alt-fill"></em></span>
@@ -63,10 +69,10 @@
                         <div class="form-label-group">
                             <label class="form-label">Choose choose bank to withdraw to:</label>
                         </div>
-                        <input type="hidden" value="btc" name="bs-bank" id="buysell-choose-currency">
+                        <input type="hidden" value="000" name="bank" id="buysell-choose-currency">
                         <div class="dropdown buysell-cc-dropdown">
                             <a href="#" class="buysell-cc-choosen dropdown-indicator" data-bs-toggle="dropdown">
-                                <div class="coin-item coin-btc">
+                                <div class="coin-item coin-000">
                                     <div class="coin-icon">
                                         <em class="icon ni ni-building-fill"></em>
                                     </div>
@@ -79,8 +85,8 @@
                             <div class="dropdown-menu dropdown-menu-auto dropdown-menu-mxh">
                                 <ul class="buysell-cc-list">
                                     <li class="buysell-cc-item selected">
-                                        <a href="#" class="buysell-cc-opt" data-currency="btc">
-                                            <div class="coin-item coin-btc">
+                                        <a href="#" class="buysell-cc-opt" data-currency="000">
+                                            <div class="coin-item coin-000">
                                                 <div class="coin-icon">
                                                     <em class="icon ni ni-building-fill"></em>
                                                 </div>
@@ -133,21 +139,21 @@
                         </div>
                         <div class="form-control-group">
                             <input type="number" class="form-control form-control-lg form-control-number"
-                                id="buysell-account" name="account_no" placeholder="5113077322">
+                                id="buysell-account" name="account_number" placeholder="5113077322">
                             <div class="form-dropdown">
                                 <div class="text-primary">NUBAN</div>
                             </div>
                         </div>
                         <div class="form-note-group">
-                            <span class="buysell-min form-note-alt">Account Name:</span>
+                            <span id="account-name" class="buysell-min form-note-alt">Account Name:</span>
                         </div>
                     </div><!-- .buysell-field -->
                 </div>
 
 
                 <div class="buysell-field form-action">
-                    <a class="btn btn-lg btn-block btn-primary" data-bs-toggle="modal" href="">Continue to
-                        Withdraw</a>
+                    <button class="btn btn-lg btn-block btn-primary" type="submit">Continue to
+                        Withdraw</button>
                 </div><!-- .buysell-field -->
                 <div class="form-note text-base text-center">NB: transfer fees may be included at checkout, <a
                         href="#">Learn about fees</a>.</div>
@@ -163,24 +169,24 @@
         $(document).ready(function() {
             // Event handler for selecting an option
             $('.buysell-pm-item').click(function() {
-            payment_method = document.forms["withdraw"]["bs-method"].value;
+                payment_method = document.forms["withdraw"]["method"].value;
 
-            switch (payment_method) {
-                case 'bank':
-                    $('#direct-bank').css('display','block');
-                    break;
+                switch (payment_method) {
+                    case 'bank':
+                        $('#direct-bank').css('display', 'block');
+                        break;
 
-                default:
-                $('#direct-bank').css('display','none');
-                    break;
-            }
+                    default:
+                        $('#direct-bank').css('display', 'none');
+                        break;
+                }
             });
         });
 
         function handlePay(event) {
             event.preventDefault(); // Prevent the form from submitting
 
-            payment_method = document.forms["deposit"]["bs-method"].value;
+            payment_method = document.forms["deposit"]["method"].value;
 
             switch (payment_method) {
                 case 'card':
@@ -215,6 +221,42 @@
 
                 // Add the "selected" class to the clicked option
                 $(this).closest('.buysell-cc-item').addClass('selected');
+            });
+
+            $("#buysell-account").on("input", function() {
+                let bankCode = $("#buysell-choose-currency").val();
+                let accountNumber = $("#buysell-account").val();
+
+                if (bankCode.length > 0 && accountNumber.length === 10) {
+                    // Make a request to Flutterwave's API
+
+                    var settings = {
+                        url: "https://api.flutterwave.com/v3/accounts/resolve",
+                        method: "POST",
+                        timeout: 0,
+                        crossDomain: true,
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": "Bearer " + "<?php echo env('FLW_PRV_KEY'); ?>"
+                        },
+                        data: JSON.stringify({
+                            "account_number": accountNumber,
+                            "account_bank": bankCode
+                        }),
+                        xhrFields: {
+                            withCredentials: true
+                        }
+                    };
+
+                    $.ajax(settings).done(function(response) {
+                        console.log(response);
+                        let accountName = response.data.account_name;
+                        $("#account-name").text(`Account Name: ${accountName}`);
+                    }).fail(function(jqXHR, textStatus) {
+                        console.error(textStatus);
+                        $("#account-name").text("Error occurred while verifying the account.");
+                    });
+                }
             });
         });
     </script>

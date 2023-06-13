@@ -60,7 +60,8 @@ class Wallet extends Model
     {
         if ($this->withdraw($amount)) {
             $recipient->deposit($amount);
+            return true;
         }
-        return true;
+        return false;
     }
 }

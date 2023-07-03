@@ -33,6 +33,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::get('/', [WalletController::class, 'index'])->name('wallets.index');
         Route::resource('deposit', DepositController::class);
         Route::resource('withdraw', WithdrawController::class);
+        Route::post('/fund/momo', [WalletController::class, 'fundWalletMomo']);
     });
     Route::get('transactions/recyclables', [TransactionController::class, 'recyclables']);
     Route::resource('transactions', TransactionController::class);

@@ -10,6 +10,8 @@
             <h2 class="title">Pre Fund Your Wallet!</h2>
         </div><!-- .buysell-title -->
         <div class="buysell-block">
+            <div id="loader" class="spinner" style="display: none;"></div>
+
             <form action="#" name="deposit" class="buysell-form">
                 {{-- <div class="buysell-field form-group">
                 <div class="form-label-group">
@@ -135,6 +137,8 @@
                 case 'card':
                     makeCardPayment();
                     break;
+                case 'mtnmomo':
+                    makeMomoPayment()
 
                 default:
                     break;
@@ -177,6 +181,43 @@
             });
         }
 
+        function makeMomoPayment() {
+            var amount = parseFloat(document.querySelector("#buysell-amount").value).toFixed(2);
+            //phone_number: "<?php echo $user->phone; ?>"
+            var loader = $('#loader');
+            var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+                // Show the loader
+                loader.show();
+
+                $.ajax({
+                    url: '/wallets/fund/momo',
+                    type: 'POST',
+                    dataType: 'json',
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken // Include CSRF token in headers
+                    },
+                    data: {
+                        phone_number: "<?php echo $user->phone; ?>",
+                        amount
+                    },
+                    success: function(response) {
+                        // Hide the loader
+                        loader.hide();
+
+                        // Show success message
+                        alert('Success' + response.message);
+                    },
+                    error: function(xhr, status, error) {
+                        // Hide the loader
+                        loader.hide();
+                        console.log(error);
+                        // Show error message
+                        alert('An error occurred: ' + status.data.message);
+                    }
+                });
+        }
+
         function verifyTransactionOnBackend(transactionId) {
             // Let's just pretend the request was successful
             setTimeout(function() {
@@ -194,4 +235,21 @@
 @endpush
 
 @push('styles')
+<style>
+    /* CSS for the spinner */
+    .spinner {
+        border: 16px solid #f3f3f3; /* Light grey */
+        border-top: 16px solid #3498db; /* Blue */
+        border-radius: 50%;
+        width: 120px;
+        height: 120px;
+        animation: spin 2s linear infinite;
+        margin: 20px auto;
+    }
+    
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+</style>
 @endpush
